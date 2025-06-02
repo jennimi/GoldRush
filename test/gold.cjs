@@ -26,6 +26,7 @@ describe("GoldToken Contract", function () {
         );
         // Wait for the contract deployment using ethers v6 syntax.
         await goldToken.waitForDeployment();
+        console.log("GoldToken deployed to:", goldToken.target);
     });
 
     describe("Deployment", function () {
