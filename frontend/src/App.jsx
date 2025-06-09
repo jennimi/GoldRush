@@ -6,29 +6,21 @@ import { readContract } from "wagmi/actions";
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from "./constants";
 import { config } from "./wagmi";
 
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import HeaderBar from "./components/layout/HeaderBar";
+import DashboardLayout from "./components/layout/DashboardLayout";
 
-import UserTokenInfo from "./components/UserTokenInfo";
-import GldBalance from "./components/GLDBalance";
-import PriceDisplay from "./components/PriceDisplay";
+import Sidebar from "./components/layout/Sidebar";
+import MarketInfoCard from "./components/MarketInfoCard";
+import TradeModal from "./components/TradeModal";
 import BuyGoldForm from "./components/BuyGoldForm";
 import SellGoldForm from "./components/SellGoldForm";
-import ApproveGLDForm from "./components/ApproveGLDForm";
-import ContractStats from "./components/ContractStats";
+import RedeemModal from "./components/RedeemModal";
+import SystemInfoCard from "./components/SystemInfoCard";
 
 export default function App() {
   const { address, isConnected } = useAccount();
   const navigate = useNavigate();
 
-  // 🔒 Redirect jika belum login (tidak ada token)
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/login");
-    }
-  }, [navigate]);
-
-  // 🔁 Cek apakah wallet milik owner
   useEffect(() => {
     const checkIfOwner = async () => {
       if (!isConnected || !address) return;
@@ -51,34 +43,69 @@ export default function App() {
     checkIfOwner();
   }, [isConnected, address, navigate]);
 
-  // 🚪 Logout function
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
-    navigate("/login");
-  };
-
   return (
-    <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <h1>🌕 GoldRush App</h1>
-        <button onClick={handleLogout} style={{ height: "2rem" }}>
-          Logout
-        </button>
-      </div>
-      <ConnectButton />
-      <br />
+    <div
+      style={{
+        padding: "2rem",
+        fontFamily:
+          "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        backgroundColor: "#111",
+        minHeight: "100vh",
+      }}
+    >
+      <HeaderBar />
       {isConnected && (
-        <>
-          <UserTokenInfo />
-          <GldBalance />
-          <PriceDisplay />
-          <BuyGoldForm />
-          <SellGoldForm />
-          <ApproveGLDForm />
-          <ContractStats />
-        </>
+        <div style={{ display: "flex", gap: "2rem", marginTop: "2rem" }}>
+          <Sidebar />
+
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+            <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap" }}>
+              <div style={{ flex: 1, minWidth: "300px" }}>
+                <div className="card" style={{ height: "100%" }}>
+                  <MarketInfoCard />
+                </div>
+              </div>
+              <div style={{ flex: 1, minWidth: "300px" }}>
+                <div className="card" style={{ height: "100%" }}>
+                  <h3 style={{ color: "#ffd700", marginBottom: "-0.5rem" }}>🛒 Trade Actions</h3>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "0rem" }}>
+                    <TradeModal actionLabel="🛍 Buy GLD">
+                      <BuyGoldForm />
+                    </TradeModal>
+                    <TradeModal actionLabel="💸 Sell GLD">
+                      <SellGoldForm />
+                    </TradeModal>
+                    <RedeemModal />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="card">
+              <SystemInfoCard />
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
+
+  // return (
+  //   <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
+  //     <h1>🌕 GoldToken DApp</h1>
+  //     <ConnectButton />
+  //     <br />
+  //     {isConnected && (
+  //       <>
+  //         <UserTokenInfo />
+  //         <GldBalance />
+  //         <PriceDisplay />
+  //         <BuyGoldForm />
+  //         <SellGoldForm />
+  //         <ApproveGLDForm />
+  //         <ContractStats />
+  //       </>
+  //     )}
+  //   </div>
+  // );
 }
