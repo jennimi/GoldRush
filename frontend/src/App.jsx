@@ -61,7 +61,7 @@ export default function App() {
   return (
     <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <h1>🌕 GoldToken DApp</h1>
+        <h1>🌕 GoldRush App</h1>
         <button onClick={handleLogout} style={{ height: "2rem" }}>
           Logout
         </button>
