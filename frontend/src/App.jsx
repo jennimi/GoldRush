@@ -20,6 +20,15 @@ export default function App() {
   const { address, isConnected } = useAccount();
   const navigate = useNavigate();
 
+  // 🔒 Redirect jika belum login (tidak ada token)
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+    }
+  }, [navigate]);
+
+  // 🔁 Cek apakah wallet milik owner
   useEffect(() => {
     const checkIfOwner = async () => {
       if (!isConnected || !address) return;
@@ -42,9 +51,21 @@ export default function App() {
     checkIfOwner();
   }, [isConnected, address, navigate]);
 
+  // 🚪 Logout function
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    navigate("/login");
+  };
+
   return (
     <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
-      <h1>🌕 GoldToken DApp</h1>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <h1>🌕 GoldToken DApp</h1>
+        <button onClick={handleLogout} style={{ height: "2rem" }}>
+          Logout
+        </button>
+      </div>
       <ConnectButton />
       <br />
       {isConnected && (

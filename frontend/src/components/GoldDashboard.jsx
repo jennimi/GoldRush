@@ -15,7 +15,6 @@ export default function GoldDashboard() {
 
   return (
     <div style={{ padding: "2rem" }}>
-      <h1>🌕 GoldToken DApp</h1>
       <ConnectButton />
       <br />
       {isConnected && (
