@@ -17,7 +17,7 @@ export const config = createConfig({
   connectors,
   chains,
   transports: {
-    [sepolia.id]: http(), // Bisa diganti dengan custom RPC URL jika perlu
+    [sepolia.id]: http("https://sepolia.infura.io/v3/14c44dea376f4191b144151e984f727e")
   },
   ssr: true,
 });
