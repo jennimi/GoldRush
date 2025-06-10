@@ -40,7 +40,7 @@ export default function AdminPage() {
   return (
     <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <h1>🌕 GoldToken DApp</h1>
+        {/* <h1>🌕 GoldToken DApp</h1> */}
         <button onClick={handleLogout}>Logout</button>
       </div>
       <GoldDashboard />
